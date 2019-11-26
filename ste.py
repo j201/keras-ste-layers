@@ -67,14 +67,14 @@ class STE(Layer):
 		self.dropconnect = dropconnect
 
 		kern_init = initializers.get(kernel_initializer)
-		self.kernel_initializer = lambda shape, dtype: self._ste_init(kern_init, shape, dtype)
+		self.kernel_initializer = lambda shape, dtype=None: self._ste_init(kern_init, shape, dtype)
 		bias_init = initializers.get(bias_initializer)
-		self.bias_initializer = lambda shape, dtype: self._ste_init(bias_init, shape, dtype)
+		self.bias_initializer = lambda shape, dtype=None: self._ste_init(bias_init, shape, dtype)
 
 	def _ste_init(self, base_init, shape, dtype):
 		"""Initializes each weight matrix in an ensemble using a base initializer"""
-		N = shape[0] // self.ensemble_size
-		return K.concatenate([base_init((N,)+shape[1:], dtype) for i in range(self.ensemble_size)], axis=0)
+		N = shape[-1] // self.ensemble_size
+		return K.concatenate([base_init(shape[:-1]+(N,), dtype) for i in range(self.ensemble_size)], axis=-1)
 
 	def build(self, input_shape):
 		assert len(input_shape) >= 2
