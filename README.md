@@ -1,6 +1,6 @@
 # STE Layers for Keras
 
-Summary and arXiv link coming soon.
+Implementation of STE (stochastically trained ensemble) layers as introduced in [arXiv:1911.09669](https://arxiv.org/abs/1911.09669).
 
 ## Usage
 
